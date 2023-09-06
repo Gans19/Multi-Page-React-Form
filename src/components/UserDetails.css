@@ -1,0 +1,19 @@
+.icons{
+position: absolute;
+/* margin-right: 200px; */
+left: 175px;
+cursor: pointer;
+margin-top: 5px;
+/* background-color: blue; */
+width: 30px;
+height: 30px;
+/* margin-right: 5px; */
+}
+.input{
+    position: relative;
+    /* width: 250px; */
+    /* margin-left: 200px; */
+}
+/* input{
+    width: 450px;
+} */

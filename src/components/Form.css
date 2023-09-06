@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.form {
+  display: flex;
+  width: 100%;
+  height: 85vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form-container {
+  display: flex;
+  width: 470px;
+  height: 380px;
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+  /* background-color: black; */
+  border: 1px solid gray;
+  border-radius: 5px;
+  margin: 10px;
+  /* padding: 20px;*/
+ } 
+.form-header {
+  /* color: black; */
+  width: 100%;
+  height: 50px;
+  /* margin-top: -335px; */
+  font-size: 40px;
+  font-weight: 700;
+  /* margin-bottom: 20px; */
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 40px;
+  /* padding-bottom: 5px; */
+  border-bottom: 1px solid #eee;
+}
+
+.form-body {
+  width: 100%;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  /* background-color: bisque; */
+}
+.form-footer {
+  /* display: block; */
+  /* background-color: aqua; */
+  height: 50px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border-top: 1px solid #eee;
+}
+
+.form-footer button {
+  margin-left: 10px;
+  width: 80px;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  margin-top: 60px;
+  width: 470px;
+  height: 10px;
+  /* background-color: orangered !important; */
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+.progress-bar div {
+  position: absolute;
+
+  background-color: orangered !important;
+  width: 33.3%;
+  height: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
