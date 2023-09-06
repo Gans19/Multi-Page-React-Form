@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Form.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserDetails from "./UserDetails";
@@ -7,13 +7,18 @@ import Others from "./Others";
 import TableSection from "./TableSection";
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
+import { Alert, AlertTitle } from "@mui/material";
 // import { BsEyeFill } from "react-icons/bs";
 
 //End of Import Section
 
 const Form = () => {
   // State Properties
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  // const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  // const [showSuccessMessageWithDuration, setShowSuccessMessageWithDuration] =
+  //   useState(false); // New state variable
   const [diaplayModal, setDisplayModal] = useState(false);
   const [page, setPage] = useState(0);
   const [tableData, setTableData] = useState([]);
@@ -63,21 +68,21 @@ const Form = () => {
     const errors = [];
     // Validate User Name
     if (!userName) {
-      errors.push("Please Enter a Username!!!");
-    } else if (userName.length < 6) {
-      errors.push("User Name Length Must Be Atleast 6 Characters!!!");
+      errors.push("Please enter a username!!!");
+    } else if (userName.length < 2) {
+      errors.push("Username length must be atleast 2 characters!!!");
     }
     // Validate User Password
     if (!password) {
-      errors.push("Please Enter a Password...");
+      errors.push("Please enter a password...");
     } else if (password.length < 6) {
-      errors.push("Password Length Must Be Atleast 6 Characters!!!");
+      errors.push("Password length must be atleast 6 characters!!!");
     }
     // Validate User Confirm Password
     if (!confirmPassword) {
-      errors.push("Please Enter a Confirm Password!!!");
+      errors.push("Please enter a confirm password!!!");
     } else if (password !== confirmPassword) {
-      return "Passwords Did Not Match!!!";
+      return "Passwords did not match!!!";
     }
     return errors.join("\n"); // No validation error
   };
@@ -90,19 +95,19 @@ const Form = () => {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     // Validate User Full Name
     if (!fullName) {
-      errors.push("Please Enter Your Full Name!!!");
-    } else if (fullName.length < 5) {
-      errors.push("Full Name Length Must Be Atleast 5 Characters!!!");
+      errors.push("Please enter your fullname!!!");
+    } else if (fullName.length < 2) {
+      errors.push("Fullname length must be atleast 2 characters!!!");
     }
     // Validate User Email
     if (!email) {
-      errors.push("Please Enter a Email Address!!!");
+      errors.push("Please enter a email address!!!");
     } else if (!mailformat.test(email)) {
-      errors.push("Please Enter a Valid Email Address!!!");
+      errors.push("Please enter a valid email address!!!");
     }
     // Validate User Nationality
     if (!nationality) {
-      errors.push("Please Enter a Nationality!!!");
+      errors.push("Please enter nationality!!!");
     }
     return errors.join("\n"); // No validation error
   };
@@ -117,19 +122,19 @@ const Form = () => {
     const errors = [];
     // Validate User Phone Number
     if (!phone) {
-      errors.push("Please Enter Your Phone Number!!!");
+      errors.push("Please enter your phone number!!!");
     } else if (!phoneno.test(phone)) {
-      errors.push("Not a valid Phone Number!!!");
+      errors.push("Not a valid phone number!!!");
     }
     // Validate User City
     if (!city) {
-      errors.push("Please Enter a City!!!");
+      errors.push("Please enter a City!!!");
     }
     // Validate User Pincode
     if (!pincode) {
-      errors.push("Please Enter a Pincode!!!");
+      errors.push("Please enter a pincode!!!");
     } else if (!pin.test(pincode)) {
-      errors.push("Please Enter a Valid Pincode!!!");
+      errors.push("Please enter a valid pincode!!!");
     }
     return errors.join("\n"); // No validation error
   };
@@ -145,6 +150,7 @@ const Form = () => {
   const validateAndSubmit = (e) => {
     e.preventDefault();
     let validationError = "";
+
     if (page === 0) {
       validationError = validatePage1();
       setPage1Error(validationError);
@@ -165,20 +171,28 @@ const Form = () => {
     if (page === FormTitle.length - 1) {
       // If it's the last page, submit the form
       setTableData([...tableData, formData]);
+      setShowSuccessMessage(true);
+      // alert("Form Submitted Successfully!!!");
       setPage(0); // Reset the form to the first page
-      setFormData(initialState); // Reset the form data
+      setFormData(initialState); // Reset the form data to initial values
       setPage1Error(""); // Clear any existing error messages
       setPage2Error("");
       setPage3Error("");
-      setFormSubmitted(true); // Submit the form
+      // setFormSubmitted(true);
+      // setDisplayModal(true);
 
+      // Show the Alert for 2 seconds and then hide it
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
       // Display a success message in the modal
-      setDisplayModal(true);
-      return; // Do not proceed to the next step if facing any errors
+      // setDisplayModal(true); // No need to manually set it here due to useEffect
     } else {
       // Move to the next page
       setPage((current) => current + 1);
     }
+    setShowSuccessMessage(false);
   };
 
   // Previous button
@@ -198,6 +212,22 @@ const Form = () => {
 
   return (
     <div className="form">
+      {showAlert && (
+        <Alert
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            position: "absolute",
+            top: "0",
+            fontSize: "20px",
+          }}
+          // severity={severity}
+        >
+          Form Submitted Successfully
+        </Alert>
+      )}
+
       {/* <div className="error-message">
         {page === 0 && <div className="text-danger">{page1Error}</div>}
         {page === 1 && <div className="text-danger">{page2Error}</div>}
@@ -268,11 +298,15 @@ const Form = () => {
 
         <Modal show={diaplayModal} onHide={handleCloseModal} centered>
           <Modal.Header closeButton>
-            <Modal.Title className="text-center">Alert Messages</Modal.Title>
+            <Modal.Title className="text-center">
+              {showSuccessMessage
+                ? "Form Submitted Successfully"
+                : "Alert Messages"}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body className="text-center font-weight-bold text-danger">
-            {formSubmitted ? (
-              <p>Form submitted successfully!</p>
+            {showSuccessMessage ? (
+              <p>Your form has been submitted successfully!</p>
             ) : (
               <>
                 {page === 0 && page1Error && (
@@ -313,9 +347,14 @@ const Form = () => {
             {page === 2 && page3Error} */}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
+            {/* <Button variant="secondary" onClick={handleCloseModal}>
               Close
-            </Button>
+            </Button> */}
+            {!showSuccessMessage && (
+              <Button variant="secondary" onClick={handleCloseModal}>
+                Close
+              </Button>
+            )}
           </Modal.Footer>
         </Modal>
       </div>
